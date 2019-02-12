@@ -5,7 +5,7 @@
 body{
     width: 550px;
     padding: 0;
-    margin: 40px auto;
+    margin: 100px auto;
 
 }
 #canvas{
@@ -13,7 +13,7 @@ body{
     /* width: 550px;
     height: 400px; */
 }
-#contenedorBotones{
+/* #contenedorBotones{
     padding: 15px 0;
 }
 .btn{
@@ -26,4 +26,4 @@ body{
 }
 .btn:hover{
     background: rgb(27, 77, 172);
-}
+} */
