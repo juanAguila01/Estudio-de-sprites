@@ -7,12 +7,12 @@ let singleton = (function(){
         function update(){
             frame(update);
             //mueve el personaje en todas las direcciones.
-            if (movimientoTeclado.arriba) {
-                cat.y -= cat.vy;
-            }
-            if (movimientoTeclado.abajo) {
-                cat.y += cat.vy;
-            }
+            // if (movimientoTeclado.arriba) {
+            //     cat.y -= cat.vy;
+            // }
+            // if (movimientoTeclado.abajo) {
+            //     cat.y += cat.vy;
+            // }
             if (movimientoTeclado.izquierda) {
                 cat.x -= cat.vx;
             }
@@ -23,33 +23,54 @@ let singleton = (function(){
             if (cat.x < mundoDeJuego.x) {
                 cat.x = mundoDeJuego.x;
             }
-            if (cat.y < mundoDeJuego.y) {
-                cat.y = mundoDeJuego.y;
-            }
+            // if (cat.y < mundoDeJuego.y) {
+            //     cat.y = mundoDeJuego.y;
+            // }
             if (cat.x + cat.w > mundoDeJuego.w) {
                 cat.x = mundoDeJuego.w - cat.w;
             }
-            if (cat.y + cat.h > mundoDeJuego.h) {
-                cat.y = mundoDeJuego.h - cat.h;
-            }
+            // if (cat.y + cat.h > mundoDeJuego.h) {
+            //     cat.y = mundoDeJuego.h - cat.h;
+            // }
             //centra la camara con respecto al personaje.
-            camara.x = Math.floor(cat.x + (cat.w / 2) - (camara.w / 2));
-            camara.y = Math.floor(cat.y + (cat.h / 2) - (camara.h / 2));
+            // camara.x = Math.floor(cat.x + (cat.w / 2) - (camara.w / 2));
+            // camara.y = Math.floor(cat.y + (cat.h / 2) - (camara.h / 2));
+
+            //scroll de la camara
+            if (cat.x < camara.leftInnerBoundary()) {
+                camara.x = Math.floor(cat.x - (camara.w * 0.25));
+            }
+            // if (cat.y < camara.topInnerBoundary()) {
+            //     camara.y = Math.floor(cat.y - (camara.h * 0.25));
+            // }
+            if (cat.x + cat.w > camara.rightInnerBoundary()) {
+                camara.x = Math.floor(cat.x + cat.w - (camara.w * 0.75));
+            }
+            // if (cat.y + cat.h > camara.bottomInnerBoundary()) {
+            //     camara.y = Math.floor(cat.y + cat.h - (camara.h * 0.75));
+            // }
+
+
 
             //colisiones de la camara con respecto al mundo.
             if (camara.x < mundoDeJuego.x) {
                 camara.x = mundoDeJuego.x;
             }
-            if (camara.y < mundoDeJuego.y) {
-                camara.y = mundoDeJuego.y;
-            }
+            // if (camara.y < mundoDeJuego.y) {
+            //     camara.y = mundoDeJuego.y;
+            // }
             if (camara.x + camara.w > mundoDeJuego.x + mundoDeJuego.w) {
                 camara.x = mundoDeJuego.x + mundoDeJuego.w - camara.w;
             }
-            if (camara.y + camara.h > mundoDeJuego.h) {
-                camara.y = mundoDeJuego.h - camara.h;
-            }
-            
+            // if (camara.y + camara.h > mundoDeJuego.h) {
+            //     camara.y = mundoDeJuego.h - camara.h;
+            // }
+            camara.vx = camara.x - camara.previousX;
+
+            fondoDistancia.x += camara.vx / 2;
+
+            camara.previousX = camara.x;
+
             render();
         }
 
@@ -88,8 +109,8 @@ let singleton = (function(){
                 e.preventDefault();
                 console.log(e.keyCode)
                 switch (e.keyCode) {
-                    case keyCodeTeclado.arriba: movimientoTeclado.arriba = true; break;
-                    case keyCodeTeclado.abajo: movimientoTeclado.abajo = true; break;
+                    // case keyCodeTeclado.arriba: movimientoTeclado.arriba = true; break;
+                    // case keyCodeTeclado.abajo: movimientoTeclado.abajo = true; break;
                     case keyCodeTeclado.izquierda: movimientoTeclado.izquierda = true; break;
                     case keyCodeTeclado.derecha: movimientoTeclado.derecha = true; break;
                 }
@@ -97,8 +118,8 @@ let singleton = (function(){
             keyUpHandler(e){
                 e.preventDefault();
                 switch (e.keyCode) {
-                    case keyCodeTeclado.arriba: movimientoTeclado.arriba = false; break;
-                    case keyCodeTeclado.abajo: movimientoTeclado.abajo = false; break;
+                    // case keyCodeTeclado.arriba: movimientoTeclado.arriba = false; break;
+                    // case keyCodeTeclado.abajo: movimientoTeclado.abajo = false; break;
                     case keyCodeTeclado.izquierda: movimientoTeclado.izquierda = false; break;
                     case keyCodeTeclado.derecha: movimientoTeclado.derecha = false; break;
                 }
@@ -126,8 +147,8 @@ class spritObject  {
         this.y = y;
         this.w = width;
         this.h = height;
-        this.vx = 4;
-        this.vy = 4;
+        this.vx = 10;
+        this.vy = 10;
         // this.movX = undefined;
         // this.visible = true;
         // this.rotar = 0;
@@ -142,7 +163,21 @@ class mundoCamara {
         this.y = y;
         this.w = w;
         this.h = h;
+        this.vx = 0;
+        this.previousX = 0;
     }
+    rightInnerBoundary(){
+        return this.x + (this.w * 0.75);
+    }
+    leftInnerBoundary(){
+        return this.x + (this.w * 0.25);
+    }
+    // topInnerBoundary(){
+    //     return this.y + (this.h * 0.25);
+    // }
+    // bottomInnerBoundary(){
+    //     return this.y + (this.h * 0.75);
+    // }
 }
 
 let movimientoTeclado = {
@@ -167,22 +202,24 @@ let context = canvas.getContext('2d');
 
 let sprites = [];
 
-let fondo = new spritObject(0,64,2561,1922,0,0,2561,1922);
-sprites.push(fondo);
+let fondoDistancia = new spritObject(0,64,1190,238,0,0,1190,238);
+sprites.push(fondoDistancia);
+let fondoCercano = new spritObject(0,302,1190,238,0,0,1190,238);
+sprites.push(fondoCercano);
 
-let mundoDeJuego = new mundoCamara(0,0,fondo.w,fondo.h);
+let mundoDeJuego = new mundoCamara(0,0,fondoCercano.w,fondoCercano.h);
 let camara = new mundoCamara(0,0,canvas.width,canvas.height);
 camara.x = Math.floor(mundoDeJuego.x + (mundoDeJuego.w / 2) - (camara.w / 2));
 camara.y = Math.floor(mundoDeJuego.y + (mundoDeJuego.h / 2) - (camara.h / 2));
 
-let cat = new spritObject(0,0,64,64,0,0,64,64);
-cat.x = Math.floor(mundoDeJuego.x + (mundoDeJuego.w / 2) - (cat.w / 2));
-cat.y = Math.floor(mundoDeJuego.y + (mundoDeJuego.h / 2) - (cat.h / 2));
+let cat = new spritObject(0,0,64,64,0,0,50,50);
+cat.x = 30;
+cat.y = 184;
 sprites.push(cat);
 
 
 let image = new Image();
-image.src = 'img/phobosTileSheet.png';
+image.src = 'img/parallaxScrollingTileSheet.png';
 image.addEventListener('load', manejadorJuego.loadHandler, false);
 
 //evento al precionar teclas para mover el sprite.
