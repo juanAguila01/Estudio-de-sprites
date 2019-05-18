@@ -1,0 +1,23 @@
+commit f769cc66e578138be34c2d212a7a80f6e55c7128
+Author: Juan Aguila <juan_aguilac13@hotmail.com>
+Date:   Thu Feb 14 07:52:55 2019 -0300
+
+    efecto parallax creado con mas de un fondo y variando la velocidad con la que estos cambian o se mueven
+
+commit c37703d0a6473605e7618fafb51c4a6c8e2a8a14
+Author: Juan Aguila <juan_aguilac13@hotmail.com>
+Date:   Tue Feb 12 09:16:51 2019 -0300
+
+    Realizo efecto de movimiento por un fondo mas grande que el canvas haciendo scroll
+
+commit 319fd4f17935357f49d9890d6c56c74018708387
+Author: Juan Aguila <juan_aguilac13@hotmail.com>
+Date:   Tue Feb 5 04:03:22 2019 -0300
+
+    generamos efectos utilizables en videojuegos dandole click a botones especificos
+
+commit 8d25bd538cc51f24d653f943a2c405391c9ab84f
+Author: Juan Aguila <juan_aguilac13@hotmail.com>
+Date:   Tue Feb 5 02:23:05 2019 -0300
+
+    Estudio de sprites con js, revotando horizontal y verticalmente dentro de canvas
